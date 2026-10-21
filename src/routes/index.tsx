@@ -471,7 +471,7 @@ function Index() {
                 ].map(([title, subtitle]) => (
                   <button key={title} className="profile-row" onClick={() => playTap()}>
                     <span className="row-emoji">
-                      {title.includes("Кэшбэк") ? "🎁" : title.includes("Способы") ? "💳" : title.includes("Улучшить") ? "📍" : title.includes("Бизнес") ? "💼" : title.includes("Семейный") ? "👨‍👩‍👧‍👦" : title.includes("Безопасность") ? "🛡️" : "ℹ️"}
+                      {title?.includes("Кэшбэк") ? "🎁" : title?.includes("Способы") ? "💳" : title?.includes("Улучшить") ? "📍" : title?.includes("Бизнес") ? "💼" : title?.includes("Семейный") ? "👨‍👩‍👧‍👦" : title?.includes("Безопасность") ? "🛡️" : "ℹ️"}
                     </span>
                     <span className="row-copy">
                       <strong>{title}</strong>

@@ -384,7 +384,7 @@ export function GoKGApp() {
                   ["Информация", ""],
                 ].map(([title, subtitle]) => (
                   <button key={title} className="profile-row" onClick={() => playClick()}>
-                    <span className="row-emoji">{title.includes("Кэшбэк") ? "🎁" : title.includes("Способы") ? "💳" : title.includes("Улучшить") ? "📍" : title.includes("Бизнес") ? "💼" : title.includes("Семейный") ? "👨‍👩‍👧‍👦" : title.includes("Безопасность") ? "🛡️" : "ℹ️"}</span>
+                    <span className="row-emoji">{title?.includes("Кэшбэк") ? "🎁" : title?.includes("Способы") ? "💳" : title?.includes("Улучшить") ? "📍" : title?.includes("Бизнес") ? "💼" : title?.includes("Семейный") ? "👨‍👩‍👧‍👦" : title?.includes("Безопасность") ? "🛡️" : "ℹ️"}</span>
                     <span className="row-copy">
                       <strong>{title}</strong>
                       {subtitle ? <small>{subtitle}</small> : null}

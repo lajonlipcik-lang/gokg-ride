@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import "./gokg-splash.css";
-import { playArrivalSound } from "./arrival-sound";
 
 interface GokgSplashProps {
   /** Вызывается после того, как заставка полностью исчезла. */
@@ -9,31 +8,21 @@ interface GokgSplashProps {
   durationMs?: number;
 }
 
-/**
- * Заставка GoKG Ride (~2.6 с):
- * 1. Контур метки-пина рисуется линией.
- * 2. Жёлтое такси плавно подъезжает и мягко останавливается внутри пина.
- * 3. Под пином расходятся круги, слово GoKG выезжает снизу.
- * 4. Заставка плавно исчезает. Звук прибытия — WebAudio, файл не нужен.
- */
-export function GokgSplash({ onFinish, durationMs = 2600 }: GokgSplashProps) {
+export function GokgSplash({ onFinish, durationMs = 1800 }: GokgSplashProps) {
   const [leaving, setLeaving] = useState(false);
   const finishRef = useRef(onFinish);
   finishRef.current = onFinish;
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const total = reduced ? 700 : durationMs;
-
-    const stopSound = playArrivalSound();
+    const total = reduced ? 450 : durationMs;
 
     const leaveTimer = window.setTimeout(() => setLeaving(true), total);
-    const doneTimer = window.setTimeout(() => finishRef.current?.(), total + 450);
+    const doneTimer = window.setTimeout(() => finishRef.current?.(), total + 350);
 
     return () => {
       window.clearTimeout(leaveTimer);
       window.clearTimeout(doneTimer);
-      stopSound();
     };
   }, [durationMs]);
 
@@ -43,70 +32,52 @@ export function GokgSplash({ onFinish, durationMs = 2600 }: GokgSplashProps) {
       aria-hidden="true"
       data-testid="gokg-splash"
     >
-      <svg
-        className="gokg-splash-scene"
-        viewBox="0 0 360 420"
-        role="img"
-        aria-label="GoKG Ride"
-      >
-        {/* Круги под пином */}
-        <circle className="gokg-ripple r1" cx="180" cy="292" r="14" />
-        <circle className="gokg-ripple r2" cx="180" cy="292" r="14" />
-
-        {/* Контур пина */}
-        <path
-          className="gokg-pin"
-          d="M180 72 C133 72 100 107 100 152 C100 208 180 272 180 272 C180 272 260 208 260 152 C260 107 227 72 180 72 Z"
-        />
-        <path
-          className="gokg-pin-fill"
-          d="M180 72 C133 72 100 107 100 152 C100 208 180 272 180 272 C180 272 260 208 260 152 C260 107 227 72 180 72 Z"
-        />
-        <circle className="gokg-pin-inner" cx="180" cy="150" r="58" />
-
-        {/* Такси: подъезжает слева и плавно останавливается */}
-        <g className="gokg-car">
-          <g className="gokg-car-settle">
-            {/* тень */}
-            <ellipse cx="180" cy="180" rx="54" ry="7" fill="rgba(0,0,0,0.35)" />
-            {/* пыль у колес при остановке */}
-            <circle className="gokg-dust d1" cx="140" cy="176" r="6" />
-            <circle className="gokg-dust d2" cx="222" cy="176" r="5" />
-            {/* кузов */}
+      <div className="gokg-brand-shell" aria-label="GoKG Ride logo">
+        <svg className="gokg-brand-logo" viewBox="0 0 520 520" role="img" aria-label="GoKG Ride">
+          <g className="gokg-brand-mark">
             <path
-              d="M128 162 C128 150 140 144 156 142 L168 128 C172 123 178 121 186 121 L206 121 C214 121 219 124 223 129 L233 142 C244 145 250 151 250 162 L250 168 C250 172 247 175 243 175 L135 175 C131 175 128 172 128 168 Z"
-              fill="#ffd23f"
-              stroke="#0b1526"
-              strokeWidth="4"
-              strokeLinejoin="round"
+              d="M260 18 L380 145 L505 188 L430 305 L462 488 L260 392 L58 488 L90 305 L15 188 L140 145 Z"
+              fill="#0d0d12"
             />
-            {/* окна */}
             <path
-              d="M170 142 L179 130 C181 127 184 126 188 126 L204 126 C209 126 212 128 215 131 L224 142 Z"
-              fill="#14263e"
+              d="M260 86 L191 206 L95 242 L176 259 L260 319 L344 259 L425 242 L329 206 Z"
+              fill="#f4d000"
             />
-            {/* шашечник на крыше */}
-            <rect x="182" y="112" width="26" height="11" rx="4" fill="#0b1526" />
-            <rect x="186" y="115" width="18" height="5" rx="2" fill="#ffd23f" />
-            {/* фара */}
-            <circle cx="247" cy="158" r="3.5" fill="#fff7cc" />
-            {/* колёса */}
-            <g className="gokg-wheel">
-              <circle cx="152" cy="175" r="11" fill="#0b1526" />
-              <circle cx="152" cy="175" r="4.5" fill="#ffd23f" />
-            </g>
-            <g className="gokg-wheel">
-              <circle cx="226" cy="175" r="11" fill="#0b1526" />
-              <circle cx="226" cy="175" r="4.5" fill="#ffd23f" />
-            </g>
+            <path
+              d="M128 245 L240 312 L260 362 L280 312 L392 245 L357 350 L260 432 L163 350 Z"
+              fill="#f4d000"
+            />
+            <path
+              d="M170 174 L260 248 L350 174 L286 174 L260 197 L234 174 Z"
+              fill="#0d0d12"
+            />
+            <path
+              d="M160 355 L208 319 L260 357 L312 319 L360 355 L260 425 Z"
+              fill="#0d0d12"
+            />
+            <path
+              d="M154 305 L98 290 L126 350 L171 380 L186 333 Z"
+              fill="#0d0d12"
+            />
+            <path
+              d="M366 305 L422 290 L394 350 L349 380 L334 333 Z"
+              fill="#0d0d12"
+            />
+            <path
+              d="M211 285 L260 318 L309 285 L260 254 Z"
+              fill="#0d0d12"
+            />
+            <path
+              d="M191 337 L221 337 L239 376 L191 376 Z"
+              fill="#0d0d12"
+            />
+            <path
+              d="M329 337 L299 337 L281 376 L329 376 Z"
+              fill="#0d0d12"
+            />
           </g>
-        </g>
-
-        {/* Слово GoKG */}
-        <text className="gokg-word" x="180" y="362" textAnchor="middle">
-          <tspan className="go">Go</tspan><tspan className="kg">KG</tspan>
-        </text>
-      </svg>
+        </svg>
+      </div>
     </div>
   );
 }

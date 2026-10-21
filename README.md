@@ -1,14 +1,38 @@
-# Welcome to your Lovable project
+# GoKG Ride
+
+Прочитай приложенный файл GOKG_SPEC.md целиком: это полное ТЗ на такси-сервис GoKG для Кыргызстана. Построй по нему рабочее приложение и сразу опубликуй.
+
+
+
+Главное:
+
+1. Рабочая регистрация и вход по почте (email + пароль, подтверждение письмом, восстановление пароля) через Supabase Auth, с обязательным согласием с Условиями и Политикой конфиденциальности.
+
+2. Номер телефона +996 подтверждается по SMS. Админ сам подключает отправку SMS в админ-панели: вводит API URL, метод, заголовки, шаблон тела с {phone} и {code}, API-ключ (хранится только на сервере, зашифрованно), имя отправителя, есть кнопка «Отправить тестовое SMS», журнал отправок и тестовый режим без провайдера.
+
+3. Страницы Политика конфиденциальности, Условия использования и «Какие данные мы используем» (таблица: данные, зачем, срок, кто видит). Админ редактирует тексты в админке. В тексте и README отметь, что юридическую проверку нужно сделать у юриста по законам КР.
+
+4. Экран «Настройки» с группами строк: тёмная тема, язык (русский/кыргызский), вибрация, пробки на карте, очистка кэша карт, «Не звонить», «Показать водителю, где я», уведомления, а также конфиденциальность, экспорт данных, удаление аккаунта и выход.
+
+5. Главный экран пассажира: карта 2ГИС на весь экран, пузырь «Подача ~N мин», панель «Откуда» (с чипом «Подъезд») и «Куда», лента тарифов «Самый быстрый / Эконом / Комфорт» с ценой «от N сом», кнопка «Заказать». Это только ориентир по удобству: используй свои цвета, свой логотип и свои иллюстрации, без чужого бренда и ассетов.
+
+6. Плавные анимации и анимированный логотип при запуске.
+
+
+
+Работай по этапам из раздела 11 файла, после каждого этапа проверяй сценарий. Ключи 2ГИС и другие секреты не пиши в код, подскажи, куда их вставить. Объясняй мне простым языком, я не программист. Перед платными действиями спрашивай меня добавил логотип. Его анимируй красиво, будто машину внутри едет и плавно останавливается. Спрашивай апи 2гис, если потребуется, если у тебя есть вариант Карты Кыргызстана, сделай сам. А так вот если что 45a54d55-46ad-4d8f-ba53-cee0aaa8a6be 
+
+ Админчкая почта Lajonlipcik@gmail.com
 
 This project was built with [Lovable](https://lovable.dev).
 
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/468e4231-fced-462c-8160-8108fa7dc622).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +44,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS

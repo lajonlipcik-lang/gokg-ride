@@ -25,7 +25,7 @@ function Profile() {
     queryFn: async () => {
       const { data: u } = await supabase.auth.getUser();
       const { data } = await supabase.from("profiles").select("full_name,phone,email").eq("id", u.user!.id).maybeSingle();
-      return { full_name: data?.full_name || (u.user?.user_metadata?.full_name as string) || "Пассажир", phone: data?.phone, email: data?.email ?? u.user?.email };
+      return { full_name: data?.full_name || (u.user?.user_metadata?.["full_name"] as string) || "Пассажир", phone: data?.phone, email: data?.email ?? u.user?.email };
     },
   });
   const soon = () => toast("Скоро будет доступно");

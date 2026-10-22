@@ -21,11 +21,11 @@ function ResetPage() {
   const [busy, setBusy] = useState(false);
   async function save(e: React.FormEvent) {
     e.preventDefault();
-    if (pw.length < 6) return toast.error("Минимум 6 символов");
+    if (pw.length < 6) { toast.error("Минимум 6 символов"); return; }
     setBusy(true);
     const { error } = await supabase.auth.updateUser({ password: pw });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Пароль изменён");
     navigate({ to: "/home", replace: true });
   }

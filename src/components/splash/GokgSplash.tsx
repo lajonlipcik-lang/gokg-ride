@@ -34,7 +34,7 @@ export function GokgSplash({ onFinish, durationMs = 1800 }: GokgSplashProps) {
       data-testid="gokg-splash"
     >
       <div className="gokg-brand-shell" aria-label="GoKG Ride logo">
-        <GokgMark className="gokg-brand-logo" />
+        <GokgMark arrive className="gokg-brand-logo" />
       </div>
     </div>
   );

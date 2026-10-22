@@ -78,8 +78,8 @@ function AuthPage() {
     <div className="flex min-h-screen flex-col bg-background px-5 pb-8 pt-14">
       <div className="mx-auto flex w-full max-w-md flex-1 flex-col">
         <div className="mb-8 flex flex-col items-center gap-3">
-          <GokgMark className="h-20 w-20" />
-          <h1 className="text-3xl font-bold text-foreground">
+          <GokgMark arrive className="h-28 w-28" />
+          <h1 key={mode} className="gokg-swap text-3xl font-bold text-foreground">
             {mode === "login" ? "Вход" : mode === "signup" ? "Регистрация" : "Восстановление"}
           </h1>
           <p className="text-center text-muted-foreground">
@@ -96,7 +96,7 @@ function AuthPage() {
             <Button variant="outline" className="mt-3 w-full" onClick={async () => { const { error } = await supabase.auth.resend({ type: "signup", email, options: { emailRedirectTo: window.location.origin + "/auth" } }); if (error) toast.error(error.message); else toast.success("Письмо отправлено повторно"); }}>Отправить письмо повторно</Button>
           </div>
         ) : (
-          <form onSubmit={submit} className="flex flex-col gap-3">
+          <form key={mode} onSubmit={submit} className="gokg-swap flex flex-col gap-3">
             {mode === "signup" && (
               <input className={field} placeholder="Ваше имя" value={name} onChange={(e) => setName(e.target.value)} required />
             )}
@@ -127,7 +127,7 @@ function AuthPage() {
               {busy ? "Подождите…" : mode === "login" ? "Войти" : mode === "signup" ? "Создать аккаунт" : "Отправить ссылку"}
             </Button>
 
-            <Button type="button" onClick={() => setMode(mode === "login" ? "signup" : "login")} className="h-14 w-full rounded-2xl bg-secondary text-base font-medium text-secondary-foreground">
+            <Button type="button" onClick={() => setMode(mode === "login" ? "signup" : "login")} className="gokg-press h-14 w-full rounded-2xl bg-secondary text-base font-medium text-secondary-foreground">
               {mode === "login" ? "Нет аккаунта? Зарегистрироваться" : "Уже есть аккаунт? Войти"}
             </Button>
           </form>

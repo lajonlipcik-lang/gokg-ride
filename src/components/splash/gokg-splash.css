@@ -6,8 +6,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--brand-background);
-  transition: opacity 0.45s ease;
+  background: var(--brand-background, var(--background));
+  transition: opacity 0.55s ease;
 }
 
 .gokg-splash.leaving {
@@ -21,69 +21,14 @@
   justify-content: center;
   width: min(88vw, 440px);
   aspect-ratio: 1;
-  animation: brand-appear 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.gokg-brand-shell-page {
-  width: min(46vw, 260px);
-  margin-bottom: 0.5rem;
 }
 
 .gokg-brand-logo {
-  display: block;
-  width: 100%;
-  height: auto;
-  filter: none;
-  opacity: 0;
-  transform: translateX(-115vw);
-  animation: brand-reveal 1.35s 0.08s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.brand-mark {
-  transform-origin: center;
-}
-
-@keyframes brand-appear {
-  0% {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes brand-reveal {
-  0% {
-    opacity: 0;
-    transform: translateX(-115vw);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes brand-float {
-  0% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-6px) scale(1.02);
-  }
-  100% {
-    transform: translateY(0) scale(1);
-  }
+  width: min(46vw, 220px);
+  aspect-ratio: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gokg-brand-logo,
-  .gokg-brand-shell {
-    animation-duration: 0.01s !important;
-    animation-delay: 0s !important;
-  }
-
   .gokg-splash {
     transition-duration: 0.15s;
   }

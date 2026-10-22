@@ -118,7 +118,7 @@ function Home() {
       )}
 
       <Link to="/menu" className="absolute left-4 top-[max(1rem,env(safe-area-inset-top))] flex h-14 w-14 items-center justify-center rounded-full bg-card text-foreground shadow-lg" aria-label="Меню"><Menu /></Link>
-      <GokgMark className="absolute right-4 top-4 h-14 w-14 rounded-full" />
+      <GokgMark className="absolute right-4 top-[max(1rem,env(safe-area-inset-top))] h-14 w-14" />
       <Button variant="ghost" onClick={locate} className="absolute right-4 top-[42%] flex h-14 w-14 items-center justify-center rounded-full bg-card text-foreground shadow-lg" aria-label="Где я"><LocateFixed /></Button>
 
       <div className="absolute inset-x-0 bottom-0 rounded-t-[28px] bg-background pb-[max(1rem,env(safe-area-inset-bottom))] shadow-2xl">
@@ -136,7 +136,7 @@ function Home() {
 
         <div className="flex gap-2 overflow-x-auto px-4 pb-3">
           {classes.map((t) => (
-            <Button variant="ghost" key={t.class} onClick={() => setCls(t.class)} className={"min-w-32 rounded-2xl px-3 py-3 text-left transition-colors " + (cls === t.class ? "bg-card" : "")}>
+            <Button variant="ghost" key={t.class} onClick={() => setCls(t.class)} className={"gokg-press min-w-32 rounded-2xl px-3 py-3 text-left transition-all duration-300 ease-out " + (cls === t.class ? "scale-100 bg-card shadow-md" : "scale-[0.96] bg-transparent opacity-70")}>
               <span className="block text-3xl">🚕</span>
               <span className="block font-semibold text-foreground">{CLASS_NAMES[t.class] ?? t.class}</span>
               <span className="text-sm text-muted-foreground">{to ? "" : "от "}<b className="text-lg text-foreground">{price(t)}</b> сом</span>

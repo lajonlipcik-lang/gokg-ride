@@ -1,6 +1,7 @@
 import { ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 
 export function MenuGroup({ children }: { children: ReactNode }) {
   return <div className="overflow-hidden rounded-3xl bg-card [&>*+*]:before:absolute [&>*+*]:before:left-16 [&>*+*]:before:right-4 [&>*+*]:before:top-0 [&>*+*]:before:h-px [&>*+*]:before:bg-border">{children}</div>;
@@ -32,5 +33,5 @@ export function MenuRow({ icon, title, subtitle, onClick, right, toggle }: RowPr
     </>
   );
   const cls = "relative flex min-h-16 w-full items-center gap-4 px-4 py-3";
-  return onClick ? <button onClick={onClick} className={cls + " active:bg-accent"}>{body}</button> : <div className={cls}>{body}</div>;
+   return onClick ? <Button variant="ghost" onClick={onClick} className={cls + " h-auto justify-start whitespace-normal rounded-none font-normal active:bg-accent"}>{body}</Button> : <div className={cls}>{body}</div>;
 }

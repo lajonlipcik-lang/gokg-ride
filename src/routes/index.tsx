@@ -1,6 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { GokgSplash } from "../components/splash/GokgSplash";
 
 export const Route = createFileRoute("/")({
@@ -18,8 +17,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const navigate = useNavigate();
   const done = useCallback(async () => {
-    const { data } = await supabase.auth.getSession();
-    navigate({ to: data.session ? "/home" : "/auth", replace: true });
+    navigate({ to: "/home", replace: true });
   }, [navigate]);
   return <div className="min-h-screen bg-background"><GokgSplash onFinish={done} /></div>;
 }

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 import { GokgMark } from "@/components/app/GokgMark";
 
 export const Route = createFileRoute("/auth")({
@@ -50,8 +51,8 @@ function AuthPage() {
           email,
           password,
           options: {
-            emailRedirectTo: window.location.origin + "/home",
-            data: { full_name: name, consent_terms: true, consent_privacy: true },
+            emailRedirectTo: window.location.origin + "/auth",
+            data: { full_name: name, consent: "true", consent_terms: true, consent_privacy: true },
           },
         });
         if (error) throw error;
@@ -89,9 +90,10 @@ function AuthPage() {
         {sent ? (
           <div className="rounded-3xl bg-card p-6 text-center">
             <p className="text-lg text-foreground">{sent}</p>
-            <button onClick={() => { setSent(null); setMode("login"); }} className="mt-6 h-14 w-full rounded-2xl bg-primary text-lg font-semibold text-primary-foreground">
+            <Button onClick={() => { setSent(null); setMode("login"); }} className="mt-6 h-14 w-full rounded-2xl bg-primary text-lg font-semibold text-primary-foreground">
               Ко входу
-            </button>
+            </Button>
+            <Button variant="outline" className="mt-3 w-full" onClick={async () => { const { error } = await supabase.auth.resend({ type: "signup", email, options: { emailRedirectTo: window.location.origin + "/auth" } }); if (error) toast.error(error.message); else toast.success("Письмо отправлено повторно"); }}>Отправить письмо повторно</Button>
           </div>
         ) : (
           <form onSubmit={submit} className="flex flex-col gap-3">
@@ -116,20 +118,21 @@ function AuthPage() {
             )}
 
             {mode === "login" && (
-              <button type="button" onClick={() => setMode("forgot")} className="self-end py-1 text-sm text-muted-foreground">
+              <Button type="button" onClick={() => setMode("forgot")} className="self-end py-1 text-sm text-muted-foreground">
                 Забыли пароль?
-              </button>
+              </Button>
             )}
 
-            <button disabled={busy || (mode === "signup" && !agree)} className="mt-3 h-14 w-full rounded-2xl bg-primary text-lg font-semibold text-primary-foreground transition-opacity disabled:opacity-40">
+            <Button disabled={busy || (mode === "signup" && !agree)} className="mt-3 h-14 w-full rounded-2xl bg-primary text-lg font-semibold text-primary-foreground transition-opacity disabled:opacity-40">
               {busy ? "Подождите…" : mode === "login" ? "Войти" : mode === "signup" ? "Создать аккаунт" : "Отправить ссылку"}
-            </button>
+            </Button>
 
-            <button type="button" onClick={() => setMode(mode === "login" ? "signup" : "login")} className="h-14 w-full rounded-2xl bg-secondary text-base font-medium text-secondary-foreground">
+            <Button type="button" onClick={() => setMode(mode === "login" ? "signup" : "login")} className="h-14 w-full rounded-2xl bg-secondary text-base font-medium text-secondary-foreground">
               {mode === "login" ? "Нет аккаунта? Зарегистрироваться" : "Уже есть аккаунт? Войти"}
-            </button>
+            </Button>
           </form>
         )}
+        <Button asChild variant="ghost" className="mt-5"><Link to="/home">Продолжить без входа</Link></Button>
       </div>
     </div>
   );

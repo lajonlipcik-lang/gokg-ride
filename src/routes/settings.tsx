@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { MenuGroup, MenuRow } from "@/components/app/MenuGroup";
 
-export const Route = createFileRoute("/_authenticated/settings")({
+export const Route = createFileRoute("/settings")({
   head: () => ({
     meta: [
       { title: "Настройки — GoKG Ride" },

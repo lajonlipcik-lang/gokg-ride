@@ -1,0 +1,13 @@
+CREATE TABLE public.support_requests (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), user_id uuid NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE, subject text NOT NULL CHECK (char_length(subject) BETWEEN 1 AND 120), body text NOT NULL CHECK (char_length(body) BETWEEN 1 AND 3000), status text NOT NULL DEFAULT 'open' CHECK (status IN ('open','answered','closed')), created_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT, INSERT, UPDATE ON public.support_requests TO authenticated;
+GRANT ALL ON public.support_requests TO service_role;
+ALTER TABLE public.support_requests ENABLE ROW LEVEL SECURITY;
+CREATE POLICY support_read ON public.support_requests FOR SELECT TO authenticated USING (user_id=auth.uid() OR public.has_role(auth.uid(),'admin'));
+CREATE POLICY support_create ON public.support_requests FOR INSERT TO authenticated WITH CHECK (user_id=auth.uid() AND status='open');
+CREATE POLICY support_admin_update ON public.support_requests FOR UPDATE TO authenticated USING (public.has_role(auth.uid(),'admin')) WITH CHECK (public.has_role(auth.uid(),'admin'));
+CREATE TABLE public.support_messages (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), request_id uuid NOT NULL REFERENCES public.support_requests(id) ON DELETE CASCADE, author_id uuid NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE, body text NOT NULL CHECK (char_length(body) BETWEEN 1 AND 3000), created_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT, INSERT ON public.support_messages TO authenticated;
+GRANT ALL ON public.support_messages TO service_role;
+ALTER TABLE public.support_messages ENABLE ROW LEVEL SECURITY;
+CREATE POLICY support_messages_read ON public.support_messages FOR SELECT TO authenticated USING (EXISTS(SELECT 1 FROM public.support_requests r WHERE r.id=request_id AND (r.user_id=auth.uid() OR public.has_role(auth.uid(),'admin'))));
+CREATE POLICY support_messages_create ON public.support_messages FOR INSERT TO authenticated WITH CHECK (author_id=auth.uid() AND EXISTS(SELECT 1 FROM public.support_requests r WHERE r.id=request_id AND r.status<>'closed' AND (r.user_id=auth.uid() OR public.has_role(auth.uid(),'admin'))));

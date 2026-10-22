@@ -1,0 +1,15 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { ArrowLeft } from "lucide-react";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+
+export const Route = createFileRoute("/_authenticated/orders")({ head: () => ({ meta: [{ title: "Мои заказы — GoKG Ride" }, { name: "description", content: "Текущие и завершённые поездки GoKG." }, { property: "og:title", content: "Мои заказы — GoKG Ride" }, { property: "og:description", content: "История и состояние поездок GoKG." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }), component: Orders });
+const statuses: Record<string, string> = { searching: "Ищем водителя", no_drivers: "Нет свободных водителей", driver_assigned: "Водитель едет к вам", driver_arrived: "Водитель на месте", in_progress: "В пути", completed: "Завершена", cancelled: "Отменена" };
+function Orders() {
+  const qc = useQueryClient();
+  const { data: rides = [], error } = useQuery({ queryKey: ["my-orders"], queryFn: async () => { const { data: account } = await supabase.auth.getUser(); if (!account.user) throw new Error("Войдите в аккаунт"); const { data, error } = await supabase.from("rides").select("*").eq("passenger_id", account.user.id).order("created_at", { ascending: false }); if (error) throw error; return data; }, refetchInterval: 5000 });
+  async function action(id: string, retry: boolean) { const { error } = await supabase.rpc(retry ? "retry_ride" : "cancel_ride", { p_ride: id }); if (error) toast.error(error.message); else await qc.invalidateQueries({ queryKey: ["my-orders"] }); }
+  return <main className="mx-auto min-h-screen max-w-xl px-5 py-6"><header className="mb-7 flex items-center gap-4"><Button asChild variant="ghost" size="icon"><Link to="/menu" aria-label="Назад"><ArrowLeft /></Link></Button><h1 className="text-2xl font-bold">Мои заказы</h1></header>{error && <p role="alert">Не удалось загрузить поездки</p>}{!error && rides.length === 0 && <p className="py-8 text-muted-foreground">У вас пока нет поездок</p>}{rides.map(r => <article key={r.id} className="border-b py-5"><div className="flex justify-between gap-3"><h2 className="font-semibold text-primary">{statuses[r.status] ?? r.status}</h2><b>{r.price} сом</b></div><p className="mt-3 break-words">{r.from_addr} → {r.to_addr}</p><p className="my-3 text-sm text-muted-foreground">{new Date(r.created_at).toLocaleString("ru-RU")} · {r.distance_km} км</p>{["searching", "no_drivers", "driver_assigned", "driver_arrived"].includes(r.status) && <Button variant="outline" onClick={() => action(r.id, false)}>Отменить заказ</Button>}{r.status === "no_drivers" && <Button className="ml-2" onClick={() => action(r.id, true)}>Повторить поиск</Button>}</article>)}</main>;
+}

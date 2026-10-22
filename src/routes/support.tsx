@@ -21,14 +21,14 @@ function SupportPage() {
   async function submit(e: React.FormEvent) {
     e.preventDefault(); if (!user || busy) return; setBusy(true);
     const { data, error } = await supabase.from("support_requests").insert({ user_id: user.id, subject: subject.trim(), body: body.trim() }).select().single();
-    setBusy(false); if (error) return toast.error(error.message);
+    setBusy(false); if (error) { toast.error(error.message); return; }
     setSubject(""); setBody(""); setSelected(data.id); await qc.invalidateQueries({ queryKey: ["support"] }); toast.success("Обращение отправлено");
   }
   async function sendReply(e: React.FormEvent) {
     e.preventDefault(); if (!user || !selected || !reply.trim() || busy) return; setBusy(true);
     const { error } = await supabase.from("support_messages").insert({ request_id: selected, author_id: user.id, body: reply.trim() });
     if (!error && admin) await supabase.from("support_requests").update({ status: "answered" }).eq("id", selected);
-    setBusy(false); if (error) return toast.error(error.message); setReply(""); await qc.invalidateQueries({ queryKey: ["support-messages", selected] }); await qc.invalidateQueries({ queryKey: ["support"] });
+    setBusy(false); if (error) { toast.error(error.message); return; } setReply(""); await qc.invalidateQueries({ queryKey: ["support-messages", selected] }); await qc.invalidateQueries({ queryKey: ["support"] });
   }
   const ticket = tickets.find(t => t.id === selected);
   const field = "w-full rounded-xl border border-input bg-input px-4 py-3 text-foreground outline-none focus:ring-2 focus:ring-ring";

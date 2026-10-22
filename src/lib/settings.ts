@@ -10,7 +10,7 @@ export function readLocalSettings(): AppSettings {
   catch { return defaultSettings; }
 }
 export function applySettings(settings: AppSettings) {
-  document.documentElement.dataset.theme = settings.theme;
+  document.documentElement.dataset["theme"] = settings.theme;
   document.documentElement.lang = settings.lang;
   localStorage.setItem("gokg-settings", JSON.stringify(settings));
 }

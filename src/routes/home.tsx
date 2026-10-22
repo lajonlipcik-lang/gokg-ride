@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { BISHKEK, geocode, km, loadMapgl, reverse } from "@/lib/map";
 
-export const Route = createFileRoute("/_authenticated/home")({
+export const Route = createFileRoute("/home")({
   head: () => ({
     meta: [
       { title: "Заказать такси — GoKG Ride" },
